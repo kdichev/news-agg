@@ -36,6 +36,9 @@ export async function getServerData(
   const feedDnevnik = await parser
     .parseURL("https://www.dnevnik.bg/rss/")
     .catch(console.log);
+  const feedPlovdiv24 = await parser
+    .parseURL("https://www.plovdiv24.bg/rss.php")
+    .catch(console.log);
   const capitalFeed = feed.items.map((i) => ({
     link: i.link,
     publisher: feed.image.title,
@@ -51,17 +54,25 @@ export async function getServerData(
     contentSnippet: i.contentSnippet,
     title: i.title,
   }));
+  const plovdiv24Feed = feedPlovdiv24.items.map((i) => ({
+    link: i.link,
+    publisher: feedPlovdiv24.title,
+    pubDate: i.pubDate,
+    contentSnippet: i.contentSnippet,
+    title: i.title,
+  }));
+
   return {
     status: 200,
     headers: {},
     props: {
       hello: "world",
-      feed: [...capitalFeed, ...dnevnikFeed].sort(function (a, b) {
-        // Turn your strings into dates, and then subtract them
-        // to get a value that is either negative, positive, or zero.
+      feed: [...capitalFeed, ...dnevnikFeed, ...plovdiv24Feed].sort(function (
+        a,
+        b
+      ) {
         return new Date(b.pubDate) - new Date(a.pubDate);
       }),
-      dnevnikFeed,
     },
   };
 }
