@@ -39,6 +39,9 @@ export async function getServerData(
   const feedPlovdiv24 = await parser
     .parseURL("https://www.plovdiv24.bg/rss.php")
     .catch(console.log);
+  const feedVestibg = await parser
+    .parseURL("https://www.vesti.bg/rss")
+    .catch(console.log);
   const capitalFeed = feed.items.map((i) => ({
     link: i.link,
     publisher: feed.image.title,
@@ -61,16 +64,24 @@ export async function getServerData(
     contentSnippet: i.contentSnippet,
     title: i.title,
   }));
-
+  const vestibgFeed = feedVestibg.items.map((i) => ({
+    link: i.link,
+    publisher: feedVestibg.title,
+    pubDate: i.pubDate,
+    contentSnippet: i.contentSnippet,
+    title: i.title,
+  }));
   return {
     status: 200,
     headers: {},
     props: {
       hello: "world",
-      feed: [...capitalFeed, ...dnevnikFeed, ...plovdiv24Feed].sort(function (
-        a,
-        b
-      ) {
+      feed: [
+        ...capitalFeed,
+        ...dnevnikFeed,
+        ...plovdiv24Feed,
+        ...vestibgFeed,
+      ].sort(function (a, b) {
         return new Date(b.pubDate) - new Date(a.pubDate);
       }),
     },
