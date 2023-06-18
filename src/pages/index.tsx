@@ -11,11 +11,11 @@ const IndexPage = ({ serverData }) => {
         {serverData.feed.map((i) => (
           <a href={i.link}>
             <li>
-              <h1
+              <h2
                 dangerouslySetInnerHTML={{
                   __html: `${i.publisher}: ${i.title}`,
                 }}
-              ></h1>
+              ></h2>
               <p>{i.pubDate}</p>
               {/* <p>{i.contentSnippet}</p> */}
             </li>
