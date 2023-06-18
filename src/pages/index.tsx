@@ -6,6 +6,7 @@ const IndexPage = ({ serverData }) => {
   console.log(serverData.feed.length);
   return (
     <div>
+      <h1>Нови Новини ({serverData.feed.length})</h1>
       <ul>
         {serverData.feed.map((i) => (
           <a href={i.link}>
