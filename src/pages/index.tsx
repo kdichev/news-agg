@@ -3,15 +3,18 @@ import React from "react";
 import Parser from "rss-parser";
 
 const IndexPage = ({ serverData }) => {
+  console.log(serverData.feed.length);
   return (
     <div>
       <ul>
         {serverData.feed.map((i) => (
           <a href={i.link}>
             <li>
-              <h1>
-                {i.publisher}: {i.title}
-              </h1>
+              <h1
+                dangerouslySetInnerHTML={{
+                  __html: `${i.publisher}: ${i.title}`,
+                }}
+              ></h1>
               <p>{i.pubDate}</p>
               {/* <p>{i.contentSnippet}</p> */}
             </li>
