@@ -42,6 +42,10 @@ export async function getServerData(
   const feedVestibg = await parser
     .parseURL("https://www.vesti.bg/rss")
     .catch(console.log);
+  const feedBnt = await parser
+    .parseURL("https://bntnews.bg/bg/rss/news.xml")
+    .catch(console.log);
+
   const capitalFeed = feed.items.map((i) => ({
     link: i.link,
     publisher: feed.image.title,
@@ -71,6 +75,13 @@ export async function getServerData(
     contentSnippet: i.contentSnippet,
     title: i.title,
   }));
+  const bntFeed = feedBnt.items.map((i) => ({
+    link: i.link,
+    publisher: feedBnt.title,
+    pubDate: i.pubDate,
+    contentSnippet: i.contentSnippet,
+    title: i.title,
+  }));
   return {
     status: 200,
     headers: {},
@@ -81,6 +92,7 @@ export async function getServerData(
         ...dnevnikFeed,
         ...plovdiv24Feed,
         ...vestibgFeed,
+        ...bntFeed,
       ].sort(function (a, b) {
         return new Date(b.pubDate) - new Date(a.pubDate);
       }),
